@@ -47,7 +47,7 @@ class TestAuthSwitchHandshake extends Command {
     count++;
     if (count < 10) {
       const asrmd = new Packets.AuthSwitchRequestMoreData(
-        Buffer.from('hahaha ' + count)
+        Buffer.from(`hahaha ${count}`)
       );
       connection.writePacket(asrmd.toPacket());
       return TestAuthSwitchHandshake.prototype.readClientAuthSwitchResponse;
@@ -86,11 +86,11 @@ portfinder.getPort((err, port) => {
       if (count == 0) {
         assert.equal(data.pluginName, 'auth_test_plugin');
       } else {
-        assert.equal(data.pluginData.toString(), 'hahaha ' + count);
+        assert.equal(data.pluginData.toString(), `hahaha ${count}`);
       }
 
       count++;
-      cb(null, 'some data back' + count);
+      cb(null, `some data back${count}`);
     };
   };
 

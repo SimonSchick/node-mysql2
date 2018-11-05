@@ -9,7 +9,7 @@ let rows1 = undefined;
 let rows2 = undefined;
 
 const q = 'select 1 + ? as test';
-const key = 'undefined/undefined/undefined' + q;
+const key = `undefined/undefined/undefined${q}`;
 
 connection.execute(q, [123], (err, _rows) => {
   if (err) {

@@ -16,14 +16,14 @@ const inserts = [];
 tests.forEach((test, index) => {
   const escaped = test.insertRaw || connection.escape(test.insert);
 
-  test.columnName = test.type + '_' + index;
+  test.columnName = `${test.type}_${index}`;
 
-  schema.push('`' + test.columnName + '` ' + test.type + ',');
-  inserts.push('`' + test.columnName + '` = ' + escaped);
+  schema.push(`\`${test.columnName}\` ${test.type},`);
+  inserts.push(`\`${test.columnName}\` = ${escaped}`);
 });
 
 const createTable = [
-  'CREATE TEMPORARY TABLE `' + table + '` (',
+  `CREATE TEMPORARY TABLE \`${table}\` (`,
   '`id` int(11) unsigned NOT NULL AUTO_INCREMENT,'
 ]
   .concat(schema)
@@ -32,21 +32,17 @@ const createTable = [
 
 connection.query(createTable);
 
-connection.query('INSERT INTO ' + table + ' SET' + inserts.join(',\n'));
+connection.query(`INSERT INTO ${table} SET${inserts.join(',\n')}`);
 
 let row;
-connection.execute(
-  'SELECT * FROM ' + table + ' WHERE id = ?;',
-  [1],
-  (err, rows) => {
-    if (err) {
-      throw err;
-    }
-
-    row = rows[0];
-    connection.end();
+connection.execute(`SELECT * FROM ${table} WHERE id = ?;`, [1], (err, rows) => {
+  if (err) {
+    throw err;
   }
-);
+
+  row = rows[0];
+  connection.end();
+});
 
 process.on('exit', () => {
   tests.forEach(test => {
@@ -67,28 +63,14 @@ process.on('exit', () => {
     }
 
     if (test.deep) {
-      message =
-        'got: "' +
-        JSON.stringify(got) +
-        '" expected: "' +
-        JSON.stringify(expected) +
-        '" test: ' +
-        test.type +
-        '';
+      message = `got: "${JSON.stringify(got)}" expected: "${JSON.stringify(
+        expected
+      )}" test: ${test.type}`;
       assert.deepEqual(expected, got, message);
     } else {
-      message =
-        'got: "' +
-        got +
-        '" (' +
-        typeof got +
-        ') expected: "' +
-        expected +
-        '" (' +
-        typeof expected +
-        ') test: ' +
-        test.type +
-        '';
+      message = `got: "${got}" (${typeof got}) expected: "${expected}" (${typeof expected}) test: ${
+        test.type
+      }`;
       assert.strictEqual(expected, got, message);
     }
   });

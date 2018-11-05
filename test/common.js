@@ -9,17 +9,9 @@ const config = {
   port: process.env.MYSQL_PORT || 3306
 };
 
-const configURI =
-  'mysql://' +
-  config.user +
-  ':' +
-  config.password +
-  '@' +
-  config.host +
-  ':' +
-  config.port +
-  '/' +
-  config.database;
+const configURI = `mysql://${config.user}:${config.password}@${config.host}:${
+  config.port
+}/${config.database}`;
 
 module.exports.SqlString = require('sqlstring');
 module.exports.config = config;
@@ -180,7 +172,7 @@ module.exports.createConnectionWithURI = function() {
 module.exports.createTemplate = function() {
   const jade = require('jade');
   const template = require('fs').readFileSync(
-    __dirname + '/template.jade',
+    `${__dirname}/template.jade`,
     'ascii'
   );
   return jade.compile(template);
