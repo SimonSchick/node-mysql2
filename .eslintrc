@@ -15,6 +15,7 @@
   },
   "rules": {
     "prefer-template": "error",
+    "no-else-return": ["error", {"allowElseIf": false}],
     "template-curly-spacing": ["error", "never"],
     "no-invalid-this": "error",
     "consistent-this": "error",

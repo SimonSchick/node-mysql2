@@ -126,7 +126,7 @@ function runFileList(base, list, done) {
     fs.stat(fname, (err, stat) => {
       if (err) return done(err);
       if (stat.isDirectory()) return runFolder(fname, runOne);
-      else if (fname.slice(-3) == '.js') {
+      if (fname.slice(-3) == '.js') {
         const m = require(fname);
         return benchmarkModule(m, fname, runOne);
       }

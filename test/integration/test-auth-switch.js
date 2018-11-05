@@ -51,10 +51,9 @@ class TestAuthSwitchHandshake extends Command {
       );
       connection.writePacket(asrmd.toPacket());
       return TestAuthSwitchHandshake.prototype.readClientAuthSwitchResponse;
-    } else {
-      connection.writeOk();
-      return TestAuthSwitchHandshake.prototype.dispatchCommands;
     }
+    connection.writeOk();
+    return TestAuthSwitchHandshake.prototype.dispatchCommands;
   }
 
   dispatchCommands(packet, connection) {
